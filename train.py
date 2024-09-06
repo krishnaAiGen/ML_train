@@ -82,17 +82,18 @@ model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_l
 
 # Set training arguments with the best hyperparameters
 training_args = TrainingArguments(
-    output_dir='./results',          # Output directory
-    num_train_epochs=3,              # Number of training epochs
-    per_device_train_batch_size=best_batch_size,   # Best batch size for training
-    per_device_eval_batch_size=best_batch_size,    # Best batch size for evaluation
-    warmup_steps=500,                # Number of warmup steps for learning rate scheduler
-    weight_decay=best_weight_decay,  # Best weight decay rate
-    logging_dir='./logs',            # Directory to store logs during training
-    logging_steps=10,                # How often to log training progress (every 10 steps)
-    eval_strategy="epoch",           # Evaluation strategy, set to evaluate at the end of each epoch
-    fp16=True,                       # Enable FP16 mixed precision for faster training on compatible hardware
-    learning_rate=best_learning_rate # Best learning rate
+    output_dir='./results',
+    num_train_epochs=15,
+    per_device_train_batch_size=best_batch_size,
+    per_device_eval_batch_size=best_batch_size,
+    warmup_steps=500,
+    weight_decay=best_weight_decay,
+    logging_dir='./logs',
+    logging_steps=10,
+    eval_strategy="epoch",
+    fp16=True,
+    learning_rate=best_learning_rate,
+    max_grad_norm=1.0  # Gradient clipping to prevent large updates
 )
 
 # Initialize the Trainer with the best hyperparameters

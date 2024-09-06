@@ -5,13 +5,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
-import optuna
 
 # Check if a compatible GPU is available and set device
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('path_to_your_dataset.csv')  # Replace with your dataset path
+df = pd.read_csv('bearish_bullish_neutral_cleaned_5_0.1.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 df = df.dropna(subset=['text', 'label'])  # Drop rows with missing texts or labels
@@ -73,58 +72,41 @@ def compute_metrics(pred):
         'recall': recall
     }
 
-# Hyperparameter optimization function using Optuna
-def objective(trial):
-    # Suggest hyperparameters to tune
-    learning_rate = trial.suggest_loguniform('learning_rate', 1e-6, 1e-4)
-    batch_size = trial.suggest_categorical('batch_size', [8, 16, 32, 64])
-    weight_decay = trial.suggest_loguniform('weight_decay', 1e-5, 1e-2)
+# Best hyperparameters found by Optuna
+best_learning_rate = 1.9689229956268363e-05
+best_batch_size = 8
+best_weight_decay = 0.00020105322157003673
 
-    # Load the BERT model for sequence classification
-    model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3).to(device)
+# Load the BERT model for sequence classification
+model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3).to(device)
 
-    # Set training arguments
-    training_args = TrainingArguments(
-        output_dir='./results',          # output directory
-        num_train_epochs=3,              # number of training epochs
-        per_device_train_batch_size=batch_size,   # batch size for training
-        per_device_eval_batch_size=batch_size,    # batch size for evaluation
-        warmup_steps=500,                # number of warmup steps for learning rate scheduler
-        weight_decay=weight_decay,       # strength of weight decay
-        logging_dir='./logs',            # directory for storing logs
-        logging_steps=10,
-        eval_strategy="epoch",           # use eval_strategy instead of evaluation_strategy
-        fp16=True,                       # Enable mixed precision
-        learning_rate=learning_rate      # Set the learning rate
-    )
+# Set training arguments with the best hyperparameters
+training_args = TrainingArguments(
+    output_dir='./results',          # Output directory
+    num_train_epochs=3,              # Number of training epochs
+    per_device_train_batch_size=best_batch_size,   # Best batch size for training
+    per_device_eval_batch_size=best_batch_size,    # Best batch size for evaluation
+    warmup_steps=500,                # Number of warmup steps for learning rate scheduler
+    weight_decay=best_weight_decay,  # Best weight decay rate
+    logging_dir='./logs',            # Directory to store logs during training
+    logging_steps=10,                # How often to log training progress (every 10 steps)
+    eval_strategy="epoch",           # Evaluation strategy, set to evaluate at the end of each epoch
+    fp16=True,                       # Enable FP16 mixed precision for faster training on compatible hardware
+    learning_rate=best_learning_rate # Best learning rate
+)
 
-    # Initialize the Trainer
-    trainer = Trainer(
-        model=model,
-        args=training_args,
-        train_dataset=train_dataset,
-        eval_dataset=val_dataset,
-        compute_metrics=compute_metrics
-    )
+# Initialize the Trainer with the best hyperparameters
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=train_dataset,
+    eval_dataset=val_dataset,
+    compute_metrics=compute_metrics
+)
 
-    # Train the model
-    trainer.train()
+# Train the model using the best hyperparameters
+trainer.train()
 
-    # Evaluate the model
-    eval_result = trainer.evaluate()
-    return eval_result['eval_accuracy']
-
-# Optimize hyperparameters using Optuna
-study = optuna.create_study(direction='maximize')
-study.optimize(objective, n_trials=10)
-
-# Print best hyperparameters
-print("Best hyperparameters: ", study.best_params)
-print("Best accuracy: ", study.best_value)
-
-
-
-"""
-label_mapping = dict(zip(label_encoder.classes_, label_encoder.transform(label_encoder.classes_)))
-print("Label Mapping:", label_mapping)
-"""
+# Evaluate the model
+eval_results = trainer.evaluate()
+print("Evaluation Results:", eval_results)

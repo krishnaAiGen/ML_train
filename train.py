@@ -77,26 +77,30 @@ best_learning_rate = 1.9689229956268363e-05
 best_batch_size = 8
 best_weight_decay = 0.00020105322157003673
 
+# Set a lower learning rate
+low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.g., 0.01)
+
 # Load the BERT model for sequence classification
 model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3).to(device)
 
-# Set training arguments with the best hyperparameters
+# Set training arguments with the lower learning rate
 training_args = TrainingArguments(
-    output_dir='./results',
-    num_train_epochs=15,
-    per_device_train_batch_size=best_batch_size,
-    per_device_eval_batch_size=best_batch_size,
-    warmup_steps=500,
-    weight_decay=best_weight_decay,
-    logging_dir='./logs',
-    logging_steps=10,
-    eval_strategy="epoch",
-    fp16=True,
-    learning_rate=best_learning_rate,
-    max_grad_norm=1.0  # Gradient clipping to prevent large updates
+    output_dir='./results',          # Output directory
+    num_train_epochs=15,              # Number of training epochs
+    per_device_train_batch_size=best_batch_size,   # Best batch size for training
+    per_device_eval_batch_size=best_batch_size,    # Best batch size for evaluation
+    warmup_steps=500,                # Number of warmup steps for learning rate scheduler
+    weight_decay=best_weight_decay,  # Best weight decay rate
+    logging_dir='./logs',            # Directory to store logs during training
+    logging_steps=10,                # How often to log training progress (every 10 steps)
+    eval_strategy="epoch",           # Evaluation strategy, set to evaluate at the end of each epoch
+    fp16=True,                       # Enable FP16 mixed precision for faster training on compatible hardware
+    learning_rate=low_learning_rate, # Lower learning rate
+    max_grad_norm=0.5,               # Apply gradient clipping to stabilize training
+    lr_scheduler_type="cosine_with_restarts" # Use a learning rate scheduler to dynamically adjust the learning rate
 )
 
-# Initialize the Trainer with the best hyperparameters
+# Initialize the Trainer with adjusted training arguments
 trainer = Trainer(
     model=model,
     args=training_args,
@@ -105,7 +109,7 @@ trainer = Trainer(
     compute_metrics=compute_metrics
 )
 
-# Train the model using the best hyperparameters
+# Train the model using the lower learning rate
 trainer.train()
 
 # Evaluate the model

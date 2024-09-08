@@ -18,7 +18,9 @@ df['label'] = df['label'].astype(str)     # Ensure labels are strings
 
 # Encode labels
 label_encoder = LabelEncoder()
-df['label'] = label_encoder.fit_transform(df['label'])
+df['label'] = label_encoder.fit_transform(df['label']).astype(str)
+label_mapping = {index: label for index, label in enumerate(label_encoder.classes_)}
+print(label_mapping)
 
 # Split the dataset into training and validation sets
 train_texts, val_texts, train_labels, val_labels = train_test_split(

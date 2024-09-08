@@ -63,13 +63,13 @@ class CustomDataset(Dataset):
 train_dataset = CustomDataset(train_encodings, train_prices)
 val_dataset = CustomDataset(val_encodings, val_prices)
 
-# Define the compute_metrics function for evaluation
+# Define the compute_metrics function for evaluation using MAE
 def compute_metrics(pred):
     labels = pred.label_ids
     preds = pred.predictions.flatten()
-    mse = mean_squared_error(labels, preds)
+    mae = mean_absolute_error(labels, preds)
     return {
-        'mse': mse
+        'mae': mae
     }
 
 # Custom model for regression using BERT
@@ -84,7 +84,7 @@ class BertForRegression(torch.nn.Module):
         logits = self.regressor(outputs.pooler_output)  # Use the pooled output for regression
         loss = None
         if labels is not None:
-            loss = torch.nn.functional.mse_loss(logits.squeeze(), labels)  # MSE loss for regression
+            loss = torch.nn.functional.l1_loss(logits.squeeze(), labels)  # MAE (L1) loss for regression
         return {'loss': loss, 'logits': logits} if loss is not None else {'logits': logits}
 
 # Initialize the model
@@ -92,7 +92,7 @@ model = BertForRegression().to(device)
 
 # Best hyperparameters found by Optuna or predefined
 best_learning_rate = 1.9689229956268363e-05
-best_batch_size = 8
+best_batch_size = 4
 best_weight_decay = 0.00020105322157003673
 
 # Set a lower learning rate

@@ -8,7 +8,7 @@ Created on Mon Sep  9 02:33:44 2024
 
 import torch
 from torch.utils.data import Dataset
-from transformers import BertTokenizer, BertModel, Trainer, TrainingArguments
+from transformers import RobertaTokenizer, RobertaModel, Trainer, TrainingArguments
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 import pandas as pd
@@ -40,8 +40,8 @@ val_prices = val_prices.reset_index(drop=True)
 train_texts = train_texts.dropna().astype(str).tolist()
 val_texts = val_texts.dropna().astype(str).tolist()
 
-# Initialize the RoBERTa tokenizer
-tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
+# Initialize the RoBERTa tokenizer for large model
+tokenizer = RobertaTokenizer.from_pretrained('roberta-large')
 
 # Tokenize the dataset
 train_encodings = tokenizer(train_texts, truncation=True, padding=True, max_length=128)
@@ -74,9 +74,9 @@ def compute_metrics(pred):
         'mae': mae
     }
 
-# Custom model for regression using RoBERTa
+# Custom model for regression using RoBERTa large
 class RobertaForRegression(torch.nn.Module):
-    def __init__(self, model_name='roberta-base'):
+    def __init__(self, model_name='roberta-large'):
         super(RobertaForRegression, self).__init__()
         self.roberta = RobertaModel.from_pretrained(model_name)
         self.regressor = torch.nn.Linear(self.roberta.config.hidden_size, 1)  # Regression head
@@ -89,22 +89,22 @@ class RobertaForRegression(torch.nn.Module):
             loss = torch.nn.functional.l1_loss(logits.squeeze(), labels)  # MAE (L1) loss for regression
         return {'loss': loss, 'logits': logits} if loss is not None else {'logits': logits}
 
-# Initialize the model
+# Initialize the model with roberta-large
 model = RobertaForRegression().to(device)
 
 # Best hyperparameters found by Optuna or predefined
 best_learning_rate = 1.9689229956268363e-05
-best_batch_size = 4
+best_batch_size = 4  # Consider reducing if you face memory issues
 best_weight_decay = 0.00020105322157003673
 
 # Set a lower learning rate
 low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.g., 0.01)
 
-# Set training arguments with the lower learning rate
+# Set training arguments to avoid saving intermediate checkpoints
 training_args = TrainingArguments(
     output_dir='./results',          # Output directory
-    num_train_epochs=15,              # Number of training epochs
-    per_device_train_batch_size=best_batch_size,   # Best batch size for training
+    num_train_epochs=200,             # Number of training epochs
+    per_device_train_batch_size=best_batch_size,   # Best batch size for training, reduce if OOM
     per_device_eval_batch_size=best_batch_size,    # Best batch size for evaluation
     warmup_steps=500,                # Number of warmup steps for learning rate scheduler
     weight_decay=best_weight_decay,  # Best weight decay rate
@@ -114,7 +114,8 @@ training_args = TrainingArguments(
     fp16=True,                       # Enable FP16 mixed precision for faster training on compatible hardware
     learning_rate=low_learning_rate, # Lower learning rate
     max_grad_norm=0.5,               # Apply gradient clipping to stabilize training
-    lr_scheduler_type="cosine_with_restarts" # Use a learning rate scheduler to dynamically adjust the learning rate
+    lr_scheduler_type="cosine_with_restarts",  # Use a learning rate scheduler to dynamically adjust the learning rate
+    save_strategy="no",              # Disable checkpoint saving
 )
 
 # Initialize the Trainer with adjusted training arguments
@@ -126,8 +127,10 @@ trainer = Trainer(
     compute_metrics=compute_metrics
 )
 
-# Train the model using the lower learning rate
+# Train the model
 trainer.train()
+
+# Save the final model at the end
 trainer.save_model('./trained_model')
 
 # Evaluate the model

@@ -13,6 +13,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
+from sklearn.metrics import mean_absolute_error
+
 
 # Check if a compatible GPU is available and set device
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -38,8 +40,8 @@ val_prices = val_prices.reset_index(drop=True)
 train_texts = train_texts.dropna().astype(str).tolist()
 val_texts = val_texts.dropna().astype(str).tolist()
 
-# Initialize the BERT tokenizer
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+# Initialize the RoBERTa tokenizer
+tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
 
 # Tokenize the dataset
 train_encodings = tokenizer(train_texts, truncation=True, padding=True, max_length=128)
@@ -72,15 +74,15 @@ def compute_metrics(pred):
         'mae': mae
     }
 
-# Custom model for regression using BERT
-class BertForRegression(torch.nn.Module):
-    def __init__(self, model_name='bert-base-uncased'):
-        super(BertForRegression, self).__init__()
-        self.bert = BertModel.from_pretrained(model_name)
-        self.regressor = torch.nn.Linear(self.bert.config.hidden_size, 1)  # Regression head
+# Custom model for regression using RoBERTa
+class RobertaForRegression(torch.nn.Module):
+    def __init__(self, model_name='roberta-base'):
+        super(RobertaForRegression, self).__init__()
+        self.roberta = RobertaModel.from_pretrained(model_name)
+        self.regressor = torch.nn.Linear(self.roberta.config.hidden_size, 1)  # Regression head
 
-    def forward(self, input_ids, attention_mask=None, token_type_ids=None, labels=None):
-        outputs = self.bert(input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids)
+    def forward(self, input_ids, attention_mask=None, labels=None):
+        outputs = self.roberta(input_ids, attention_mask=attention_mask)
         logits = self.regressor(outputs.pooler_output)  # Use the pooled output for regression
         loss = None
         if labels is not None:
@@ -88,7 +90,7 @@ class BertForRegression(torch.nn.Module):
         return {'loss': loss, 'logits': logits} if loss is not None else {'logits': logits}
 
 # Initialize the model
-model = BertForRegression().to(device)
+model = RobertaForRegression().to(device)
 
 # Best hyperparameters found by Optuna or predefined
 best_learning_rate = 1.9689229956268363e-05

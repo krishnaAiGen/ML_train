@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('price_categorize.csv')  # Replace with your dataset path
+df = pd.read_csv('price_categorize_bullish.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 df = df.dropna(subset=['text', 'label'])  # Drop rows with missing texts or labels
@@ -83,7 +83,7 @@ best_weight_decay = 0.00020105322157003673
 low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.g., 0.01)
 
 # Load the BERT model for sequence classification
-model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3).to(device)
+model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=4).to(device)
 
 # Set training arguments with the lower learning rate
 training_args = TrainingArguments(

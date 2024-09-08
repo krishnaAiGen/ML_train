@@ -22,7 +22,7 @@ If sentiment is favorable 0x Labs will continue to develop and deploy the system
 
 A subsequent vote ZEIP95 will be required to officially switch ownership of the exchangeProxy contract to a new governance mechanism completing the transition
 
- Do you support the continued development and deployment of the proposed technical implementation for an onchain governance system",very high
+ Do you support the continued development and deployment of the proposed technical implementation for an onchain governance system",high
 2," Goal of the vote
 
 0x Labs would like to gather signal from the community on support for the proposed Metatransaction and Multiplex upgrades as proposed in ZEIP96httpsgithubcom0xProjectZEIPsissues96
@@ -47,7 +47,7 @@ Award 32k to Paperclip Labs
 
 FOR  proposal should move forward to an onchain vote 
 AGAINST  proposal should not move forward at this time
-ABSTAIN  voter has conflict of interest or other factor affecting vote",very high
+ABSTAIN  voter has conflict of interest or other factor affecting vote",high
 4," Goal of Vote
 
 This snapshot vote is to gauge community sentiment regarding the 31Third grant proposal to resource the development of the BundleSwapFeature The pZEIP and forum discussion can be found at 
@@ -81,11 +81,11 @@ Award 25k to 31Third
  Snapshot Vote
 FOR  proposal should move forward to an onchain vote
 AGAINST  proposal should not move forward at this time
-ABSTAIN  voter has conflict of interest or other factor affecting vote",very high
+ABSTAIN  voter has conflict of interest or other factor affecting vote",high
 6,"Details
 httpsgovuniswaporgtretroactiveairdropexcludesproxycontractusersegdharmamatchaetc1222
 
-httpsgovuniswaporgtapplicationforretroactiveproxycontractairdropforprojectsapps3221",high
+httpsgovuniswaporgtapplicationforretroactiveproxycontractairdropforprojectsapps3221",medium
 7,"Voting Delay is the period between when a proposal is made and when voting starts and the delegation snapshot is taken
 The current delay is 1 block
 Should we increase it",small
@@ -566,7 +566,7 @@ The Vote will consist of these three different options
 FOR Going with the proposed approach Original Tokenomics Proposal
 AGAINST Looking for other options
 ABSTAIN I dont mind which option is chosen
-Note this proposal will not cause any onchain action",high
+Note this proposal will not cause any onchain action",medium
 19,"In anticipation of the forthcoming V4 tokenomics that has received positive community feedback and with the aim of seeking the greatest impact for protocol revenue allocation we propose suspending the scheduled Q2 burn Instead those funds would be reallocated towards the newly anticipated tokenomics v4
 
 This would not affect the already planned Buyback funds allocated for Q2
@@ -580,7 +580,7 @@ Burn funds allocated for Q2 would instead be allocated to bring available supple
  Delivering ongoing monitoring and supervision of RWA investments for Venus
  Offering comprehensive onchain and offchain reporting to Venus
 
-For the full details of their proposal to Venus please visit the link below",very high
+For the full details of their proposal to Venus please visit the link below",high
 21,"This Snapshot vote is a temperature check in reference to the proposal shared yesterday in the Community Forum
 
 The proposal presents a plan to attain and maintain the peg of VAI to 1 The proposal involves a series of steps starting with providing liquidity to PancakeSwap V2 PCS for the VAIUSDT pair and followed by further developments and evaluations
@@ -702,7 +702,7 @@ Travalas established presence in the travel industry with major partnerships and
 
 By leveraging Travalas platform Venus can tap into a large user base that is already accustomed to using cryptocurrencies for travel bookings The proposals focus on boosting XVSs utility and accessibility aligns well with the strategic vision of both the Venus community and Travala 
 
-The initial support from Venus DAO to cover integration costs and marketing expenses demonstrates a commitment to driving the success of this partnership",high
+The initial support from Venus DAO to cover integration costs and marketing expenses demonstrates a commitment to driving the success of this partnership",medium
 27,"After carefully evaluating Venus Primes performance following 5 months of deployment The community proposed adjustments to its distribution focusing on aligning more closely with each markets contribution to protocol reserves 
 
 The changes are designed to more accurately reflect market dynamics and user participation
@@ -904,7 +904,7 @@ This document outlines the Boring Security Mission statement and alignment with 
 
 Link to the full proposal httpsforumapecoincomtaip9boringsecurityecosystemfundallocation5778
 
-The AIP implementation is administered by the Ape Foundation Implementation may be immaterially or materially altered to optimise for security usability to protect APE holders and otherwise to effect the intent of the AIP Any material deviations from an AIP as initially approved will be disclosed to the APE holder community",high
+The AIP implementation is administered by the Ape Foundation Implementation may be immaterially or materially altered to optimise for security usability to protect APE holders and otherwise to effect the intent of the AIP Any material deviations from an AIP as initially approved will be disclosed to the APE holder community",medium
 52," ABSTRACT
 
 This proposal is for receiving financial support from the APECoin DAO for Ape Drops The projects goal is to become a curated NFT platform for the Ape community At full operational capacity Ape Drops will release multiple curated NFT drops a week from the best designers and musicians in the space Funds will go towards building a larger team and financing NFT drops and events with high profile artists We will only receive funds from the DAO when we reach key milestones
@@ -913,7 +913,7 @@ This proposal is for receiving financial support from the APECoin DAO for Ape Dr
 
 Link to the full proposal httpsforumapecoincomtaip29apecoindaoproposalforapedropsmarketplacebranddecision6107
 
-The AIP implementation is administered by the Ape Foundation Implementation may be immaterially or materially altered to optimise for security usability to protect APE holders and otherwise to effect the intent of the AIP Any material deviations from an AIP as initially approved will be disclosed to the APE holder community",high
+The AIP implementation is administered by the Ape Foundation Implementation may be immaterially or materially altered to optimise for security usability to protect APE holders and otherwise to effect the intent of the AIP Any material deviations from an AIP as initially approved will be disclosed to the APE holder community",medium
 53," ABSTRACT
 
 This document proposes to make me Guy Oseary a representative of ApeCoin This role will make it my job to support ApeCoin through impactful partnerships and initiatives I will not receive any payment for my services
@@ -922,7 +922,7 @@ This document proposes to make me Guy Oseary a representative of ApeCoin This ro
 
 Link to the full proposal httpsforumapecoincomtaip36guyosearyasapecoinrepresentativeecosystemfundallocation6109
 
-The AIP implementation is administered by the Ape Foundation Implementation may be immaterially or materially altered to optimise for security usability to protect APE holders and otherwise to effect the intent of the AIP Any material deviations from an AIP as initially approved will be disclosed to the APE holder community",high
+The AIP implementation is administered by the Ape Foundation Implementation may be immaterially or materially altered to optimise for security usability to protect APE holders and otherwise to effect the intent of the AIP Any material deviations from an AIP as initially approved will be disclosed to the APE holder community",medium
 54," ABSTRACT
 
 Utilizing the Ape Foundation IP give Papasito the discretion to work with professionals to design APE merch echoing the Ape Fest 2021 merch with a unique design pertaining to the DAO to generate revenue
@@ -2465,7 +2465,7 @@ Total 10000 development  maintenance 12 months Stables USDC or BUSD
 
 For individuals and organizations who wants a better crypto experience HAL is a blockchain automation platform that provides a better way to connect dApps wallets and tokens Unlike other onchain events tracking products HAL does help both individual and organizations with easytouse and userfriendly reliable products
 
-Websitehttpshalxyz  Twitterhttpstwittercomhal_team  Telegramhttpstmehaldev  Discordhttpsdiscordgg7jPzruxFs9",high
+Websitehttpshalxyz  Twitterhttpstwittercomhal_team  Telegramhttpstmehaldev  Discordhttpsdiscordgg7jPzruxFs9",medium
 153,"The FITFI Farm and Syrup Pool 
 
  FITFIBNB Farm 
@@ -2473,7 +2473,7 @@ pancakeswapfinancefarms
  Stake CAKE Earn FITFI
 pancakeswapfinancepools
 
-APR will drop as liquidity increases",high
+APR will drop as liquidity increases",medium
 154,To allow accumilation of the  for longer commitment,high
 155,how are u,high
 156,hello,high
@@ -2508,7 +2508,7 @@ PCS is the best in the business at creating tokenmoics with burn mechanisms etc 
 165,"I sugest creating a multireward pool where everyone who had their Cake locked could earn token from other pools  a kind of Cake Vault This would increase global apr allow Cake holders to earn other tokens and encourage locking
 
 Note the rewards from the other pools would not be locked",high
-166,should there be a point at whjtch someones IQ has fallen below a certain limit rendering them unable to participate in the virtuous noble cryptocurrency free market,high
+166,should there be a point at whjtch someones IQ has fallen below a certain limit rendering them unable to participate in the virtuous noble cryptocurrency free market,medium
 167,"httpsiimgurcomLlmyIzGpng
 
  PancakeSwap and Token Supply
@@ -3231,18 +3231,18 @@ Setting up the auction
 As long as theres 1 bid the NFT will be sold
 
 All sold NFT will incur a  fee that will be used to buy back and burn cake",high
-228,Are you here,very high
-229,Should Pancake launch NFT Bundle,very high
+228,Are you here,high
+229,Should Pancake launch NFT Bundle,high
 230,"I Think Pancake should compensate for everyone who locked there Cake away when the APR Was over 25 i staked at 48 The token is losing value and there is 2 things that would normally happen 1 ITS LOCKED APR So it shouldnt change or 2 APR Will rise to compensate for the value loss neither of these have happened and everyone whos stuck in staking is currently down on there investment and the apr is also so low its not worth it being in it anymore
 
 Either set a date where anyone who wants to can withdraw are locked staking as you have changed the APR and rules so that should allow us to uninvest if we no longer aline together or burn a SUBSTANTIAL Amount of total supply tokens to substitute for the losses we have occured
 
-Because in my eyes all your doing in pushing products for farming pools or new customers and letting the current ones rott without addressing anyone that is questioning you about it Or do an AMA So we can ask the questions that need answering",very high
+Because in my eyes all your doing in pushing products for farming pools or new customers and letting the current ones rott without addressing anyone that is questioning you about it Or do an AMA So we can ask the questions that need answering",high
 231,"I suggest to let people unlock their locked CAKE from Pool farms
 with or without penalty
-lot of people locked their cake with high APY and now get nothing",very high
-232,Are you fully immersed in the world of cryptocurrency as your primary source of income or do you dabble in it alongside your regular job or other income streams Share your perspective experiences and insights Lets explore the diverse ways our community is engaging with crypto,very high
-233,Are you a HODLer who believes in longterm holding or do you actively trade and manage your crypto portfolio,very high
+lot of people locked their cake with high APY and now get nothing",high
+232,Are you fully immersed in the world of cryptocurrency as your primary source of income or do you dabble in it alongside your regular job or other income streams Share your perspective experiences and insights Lets explore the diverse ways our community is engaging with crypto,high
+233,Are you a HODLer who believes in longterm holding or do you actively trade and manage your crypto portfolio,high
 234,"I am a refugee from ukraine after the recent shelling of Ukraine an enemy missile hit our house my parents were sleeping inside without hearing the air raid as the thunder phone is quite far away my parents thank god stayed alive but my father is in serious condition at the moment we dont understand what to do the house is destroyed it is impossible to live in it anymore and my parents need help please if you could help it would be very helpful to my family Any amount will help us a lot we really appreciate the fact that people are worried and helping our people Thank you for your kindness we really appreciate the opportunity to speak out
 
  USDT Arbitrum
@@ -3255,7 +3255,7 @@ EthereumETH
 
 Tether USDT ERC20
 
-0xF94D9773426Ca22b893460d7DC66f31dd5d02b52",very high
+0xF94D9773426Ca22b893460d7DC66f31dd5d02b52",high
 235,"Hello dont waste your time making dump proposal to drain the coin make something to increase the calue of the protocol 
 
 The idea is reward with some progressive percentage to someone who holds CAKE and provide liquidity for pools or farm
@@ -3270,7 +3270,7 @@ This will generate something really useful for the token
 
 My Instagram Anarkobobo 
 
-Im open to discuss",very high
+Im open to discuss",high
 236,"12321
 131231
 12312
@@ -3311,13 +3311,13 @@ Thank you",high
 
  Community is growing
  Bull Run seems to be coming
- incentive the content creation Tutorials Posts events workshops etc",high
+ incentive the content creation Tutorials Posts events workshops etc",medium
 245,"Hello everyone dear users Im Tressy and my birthday is coming up on November 30th in connection with this read this text I need help working in cryptocurrency I really want to develop in this direction But for this I need to quit my job pay rent and buy a good computer I know that many people are having difficulties with money now but I will be grateful to those likeminded people who will support me Im not asking you to donate to me Ill just leave my wallet address here 0x726094144A6F076f0a0E65476Dd53d6B4d86f303 so that they can see that I am active in projects and follow my dream you can also follow me on DeBank where I display my activity you can follow me or just watch Write all this from my old computer earn money for a new one and continue to develop in cryptocurrency
 If you donated money to me write me a comment in DeBank in a private message or in blockchain chat",medium
 246,"1  40k
 2  40k",medium
 247,Choose yours,medium
-248,Back again to 05,high
+248,Back again to 05,medium
 249," Proposal for Adjustments to BNB Chain v3 Farm Rewards
 
 As we continue to optimize CAKE rewards across all of our deployments we are able to gradually lower the overall CAKE emission while maintaining sufficient liquidity to facilitate a smooth trading experience Ultimately this enables us to contribute a greater amount of CAKE towards the weekly burn 
@@ -3477,7 +3477,7 @@ Lets ask the community to decide what they need more
 
 1 More Rewards and Passive income with less deflation
 2 MUCH More Rewards and Passive Income with balanced stable Total Supply Every week all aditional minted cakes which would be burned to create deflation will be gived to veCake shares as rewards
-3 Nothing Keep same deflation and same Rewards",high
+3 Nothing Keep same deflation and same Rewards",medium
 253,"httpsiimgurcom4dp8fhRjpg 
 
  Proposal to Launch veCAKE Gauges System on zkSync
@@ -3555,7 +3555,7 @@ I have been with CAKE since day 1 I saw CAKE go from 029 to 13 then 22 and reach
 Today the protocol built by the devs who deserve ENORMOUS RESPECT AND CONGRATULATIONS FROM THE ENTIRE COMMUNITY for their work is much better than when it reached above 40 So we need to instill more confidence to holde CAKE and to reduce the constant every day selling from farms by those who are only interested in increasing APR Even these individuals should benefit because with a higher CAKE price the suppliers CAKE reward will be greater
 
 
-Devs its all about CAKE Lets empower Ultrasound CAKE with more deflation",high
+Devs its all about CAKE Lets empower Ultrasound CAKE with more deflation",medium
 255,"Adding a hBTCwBTC pool to further grow liquidity of BTC on Ethereum and easier swap between the two assets in the pool
 
 The hBTCwBTC pool will be is a nolending pool and more gasoptimized version of previous contracts Its ported to Vyper 02 and also changes the hardcap on admin fee to be 100
@@ -3590,7 +3590,7 @@ Creating a new gauge means governance participants would then be able to allocat
 
 The gauge would have a 50 admin fee on Uniswap profits which means 50 of profits would be collected by the DAO and distributed to veCRV holders on withdrawal If there were no profits the withdrawal fee will be free",medium
 260,Should a gauge be added that weights weekly CRV inflation to Curve pools based on their average utilization rates,medium
-261,Discussread httpsgovcurvefitcip21addingalinkusd3poolmetapool911,high
+261,Discussread httpsgovcurvefitcip21addingalinkusd3poolmetapool911,medium
 262,Read here httpsgovcurvefitcip23gaugetoallocatedailynewcrvtovecrvholders926,medium
 263,Read httpsgovcurvefitcip28whattokenshouldadminfeesbedistributedintovecrvholders951,medium
 264," Problem
@@ -3693,28 +3693,28 @@ Oligopoly Productions Writeup
 Defi Weekly Writeup by Kerman Kohli
 esdtools dashboard for tracking the state of the network
 httpsexploreduneanalyticscomdashboardemptysetdollar 1",high
-271,Read here httpsgovcurvefitscip13proposalaboutaddingqusdqusd3poolmetapooltocurve1108,high
+271,Read here httpsgovcurvefitscip13proposalaboutaddingqusdqusd3poolmetapooltocurve1108,medium
 272,Read here httpsgovcurvefitscip18seureurspool1149,medium
-273,Read more httpsgovcurvefitscip20ethankreth1163,high
-274,Read more httpsgovcurvefitscip19aaveastablepooladaiausdcausdt1164,high
+273,Read more httpsgovcurvefitscip20ethankreth1163,medium
+274,Read more httpsgovcurvefitscip19aaveastablepooladaiausdcausdt1164,medium
 275,Do you support introducing DAO role delegation in any capacity,medium
 276,Read more httpsgovcurvefitscip22addausttripoolmetapool1192,medium
 277,Read more httpsgovcurvefitscip23addaobtcsbtcmetapool1193,medium
-278,Read More httpsgovcurvefitscip24renfilwfilpool1215,high
-279,Read more httpsgovcurvefitscip25stethethpool1216,high
-280,Read more httpsgovcurvefitscip27addingaadaiasusdpool1339,very high
+278,Read More httpsgovcurvefitscip24renfilwfilpool1215,medium
+279,Read more httpsgovcurvefitscip25stethethpool1216,medium
+280,Read more httpsgovcurvefitscip27addingaadaiasusdpool1339,high
 281,"Proposing to add a LinksLink pool that will allow users to trade slippage free using the Curve x Synthetix trading route into and from Link 
 
-Further details and discussion here  httpsgovcurvefitaddlinkslinkpool1436",high
+Further details and discussion here  httpsgovcurvefitaddlinkslinkpool1436",medium
 282,Read more httpsgovcurvefitaddingatusdtripoolmetapool1437,medium
-283,Read here httpsgovcurvefitscip46gaugesubstitutiononfantom2241,high
+283,Read here httpsgovcurvefitscip46gaugesubstitutiononfantom2241,medium
 284,We should release some NFT as community governance to give back to old users,high
 285,我觉得是的,high
 286,各个链或二层网络上的CRV应该与主链上的代币有相同的投票权,high
 287,我的建议就是两个字拉盘兄弟们给我梭哈冲啊,high
 288,Curve should burn harf of total volume,high
-289,肯定能,high
-290,头像类作为最早出现的一种NFT现在除了cryptopunksBAYC和cool cat等较早出现的社区认可度高的项目似乎很久未出现新的蓝筹项目方也倾向于开发狼羊游戏gamefi等新品类您认为PFP头像类NFT会长期被老牌的这几种统治还是会出现新的机会,high
+289,肯定能,medium
+290,头像类作为最早出现的一种NFT现在除了cryptopunksBAYC和cool cat等较早出现的社区认可度高的项目似乎很久未出现新的蓝筹项目方也倾向于开发狼羊游戏gamefi等新品类您认为PFP头像类NFT会长期被老牌的这几种统治还是会出现新的机会,medium
 291,"TLDR
 
  Snapshot recently added a HAL plugin halxyz
@@ -4043,7 +4043,7 @@ Original httpsforumbalancerfinancetproposalbalancerexchangegasreimbursement705
 
 Expand the eligible token list from 5 tokens to over 400 tokens httpsforumbalancerfinancetproposalexpandtheexchangegasreimbursementtoallwhitelistedtokens799
 
-Extend the program duration from 4 weeks to 8 weeks httpsforumbalancerfinancetproposalextendtheexchangegasreimbursementprogram4weeks1121",high
+Extend the program duration from 4 weeks to 8 weeks httpsforumbalancerfinancetproposalextendtheexchangegasreimbursementprogram4weeks1121",medium
 303,"This proposal also appears on Balancers forumhttpsforumbalancerfinancetproposalincreaseaavecaptierfromcap5touncapped100muncapped1353 If approved changes would take effect at 0000 UTC on Monday March 8
 
 This is a proposal to raise the liquidity mining cap from 100M to uncapped for AAVE
@@ -4063,7 +4063,7 @@ Uncapping the BAL rewards for the AAVEETH pool will allows even further incentiv
  What is The Safety Module
 
 The Aave Safety Module acts as a collateral for the whole Aave ecosystem AAVE holders and now  with the new Balancer Based Stake  AAVEETH holders benefit from long term rewards for securing the protocol from insolvency while at the same time bearing the risk of being slashed in case of shortfall events
-Having a very liquid onchain market and a consistent capital allocated in the Safety Module greatly increases the safety of the Aave ecosystem and the Aave protocol liquidity providers",high
+Having a very liquid onchain market and a consistent capital allocated in the Safety Module greatly increases the safety of the Aave ecosystem and the Aave protocol liquidity providers",medium
 304,"This proposal also appears on Balancers forumhttpsforumbalancerfinancetproposalextendgovfactorinbalancerv11755
 
  Summary
@@ -5087,7 +5087,7 @@ If this proposal passes the following will be in effect
 
  Any future funding proposals must adhere to the guidelines as described above Please find an example template herehttpsforumbalancerfithowtocreateafundingproposal3233
  The Ops subDAO will dissolve at the end of the second quarter After salaries are paid for June any remaining funds will be returned to the DAO Multisig All powers held by Ops will return to veBAL governance
- This proposal will mark the start of a new tracking system BIP or Balancer Improvement Proposal When a proposal is added to snapshot it will be given a BIP number  consider this proposal to be BIP1",high
+ This proposal will mark the start of a new tracking system BIP or Balancer Improvement Proposal When a proposal is added to snapshot it will be given a BIP number  consider this proposal to be BIP1",medium
 323," Summary
 
 This proposal aims to allowlist Gnosisdaos treasury in Balancers VotingEscrow contract to allow for locking veBAL to participate in Balancers governance and vote on gauges
@@ -5103,7 +5103,7 @@ httpsforumgnosisiotgip22partnershipagreementbetweenbalancerdaognosisdao3102
   Specification
 
 Allowlist the following Gnosis Safe wallets 
-0xf094D5205197435DA9268Dfb0540e1BF3c1C970a 0x8B5c657B1a31d9deB90a2d6Da6966a2186d1800b 0x849D52316331967b6fF1198e5E32A0eB168D039d",high
+0xf094D5205197435DA9268Dfb0540e1BF3c1C970a 0x8B5c657B1a31d9deB90a2d6Da6966a2186d1800b 0x849D52316331967b6fF1198e5E32A0eB168D039d",medium
 324," Motivation
 
 Balancer recently launchedhttpsopbeetsfipools on Optimism in collaboration with BeethovenX This deployment will soon utilize veBAL gauges for BAL emissions so it is important that BAL maintains adequate liquidity and price equivalence with Ethereum To get around the 7 day withdrawal period on the official Optimism bridge which breaks the necessary arbitrage loop with Ethereum I have enlisted the help of Multichainhttpsmultichainxyz They have added support for BAL between Ethereum and Optimism however it requires liquidity to be functionalhttpsdocsmultichainorgforpartnersforpartnersfaq
@@ -5120,7 +5120,7 @@ The treasury currently holds 4M BALhttpsgnosissafeioappeth0x10A19e7eE7d7F8a52822
 
  Specification
 
-If approved 40000 BAL would be sent from the DAO Multisig 0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f to the LM Multisig 0xc38c5f97B34E175FFd35407fc91a937300E33860 and deposited 5050 on both sides of the bridge",high
+If approved 40000 BAL would be sent from the DAO Multisig 0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f to the LM Multisig 0xc38c5f97B34E175FFd35407fc91a937300E33860 and deposited 5050 on both sides of the bridge",medium
 325," Motivation
 
 As some have noticed the CREAMWETH gaugehttpsforumbalancerfitcreamweth8020gauge3165 we recently approved has been allocated over 40 of BAL emissions In concert with that the swap fee on the pool has been set to 10 This has exposed a hole in our gauge requirements that should be remedied for all past and future gauges By setting the swap fee to 10 they are attempting to prevent trading in the pool in order to passively farm BAL rewards 
@@ -5137,7 +5137,7 @@ Failure to adhere to these guidelines for existing gauges where the owner is not
 
  Specification
 
-If approved the above guidelines will immediately and retroactively go into effect Due to the time sensitive nature the vote will likely begin later today but discussion can and should continue while the vote is ongoing",high
+If approved the above guidelines will immediately and retroactively go into effect Due to the time sensitive nature the vote will likely begin later today but discussion can and should continue while the vote is ongoing",medium
 326,"Hi everyone
 
 As most of you are aware the Tribe DAO has applied for a veBAL allowlisting last monthhttpsforumbalancerfitproposalallowtribedaotolockvebal2888 that was granted by the Balancer DAO and 112041 B80BAL20WETH tokens were successfully locked into veBAL last month
@@ -5166,7 +5166,7 @@ account 0x34ac9f7ebA9213C827fE5Abf5b09A16F4D0cC69b taken from herehttpsgithubcom
 
 This is the permission to mint BAL
 
-A second transaction from the DAO Multisig 0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f would call performNextStage on 0x34ac9f7ebA9213C827fE5Abf5b09A16F4D0cC69b",high
+A second transaction from the DAO Multisig 0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f would call performNextStage on 0x34ac9f7ebA9213C827fE5Abf5b09A16F4D0cC69b",medium
 327," Motivation
 
 As you may have seen Synthetix recently addressedhttpsforumbalancerfitmediumseveritybugfound31619 the Medium Severity Bug identified last month The team at Balancer Labs has put a contract together that will move the affected funds from the ProtocolFeeCollector back to the Vault which will restore normal operation I propose executing this contract as soon as possible
@@ -6708,7 +6708,7 @@ What SEBA brings to the Aave Arc community
 	And with a bankinggrade platform to securely bridge liquidities in Aave ARC
 
 
-For more details please check the forum post httpsgovernanceaavecomtarcaddingsebabankasawhitelistertoaavearc6661",high
+For more details please check the forum post httpsgovernanceaavecomtarcaddingsebabankasawhitelistertoaavearc6661",medium
 353,"As described on the analysis of xSUSHIs incident here httpsgovernanceaavecomtanalysisofxsushisincident6335 a bounty of total 100k was proposed divided equally between 2 researches of other communities flashfish0x and nipun_pit
 This vote is a request for approval of the Aave community to release the aforementioned funds The practical payment will be coordinated by eboado Aave governance forum and the Aave Grants DAO with the funds forwarded from the allocation of the last",medium
 354,"
@@ -7732,7 +7732,7 @@ sETH curve pool TVL 86M  39M sETH
 
 Technical Specifications sUSD
 
-Chainlink sUSD price feed Decentralized Price Reference Data  Chainlinkhttpsdocschainlinkdocsoptimismpricefeeds",high
+Chainlink sUSD price feed Decentralized Price Reference Data  Chainlinkhttpsdocschainlinkdocsoptimismpricefeeds",medium
 367," Summary
 
 A proposal to whitelist Connext a trust minimized cross chain protocol for V3 Portals on 6 chains Optimism Arbitrum Polygon Avalanche Fantom Harmony  with credit lines for USDC 2m on each chain USDT 1m on each chain and ETH 40 ETH on each chain
@@ -8238,7 +8238,7 @@ Important to note here is that Reserve only recently switched to a new RSR contr
  Number of token holders
       507K unique onchain wallets as Etherscan is eventbased the Holders tab on the new RSR contracthttpsetherscaniotoken0x320623b8e4ff03373931769a31fc52a4e78b5d70balances does not show all holders only those who have performed a transaction since January 2022 the old contract does still show the amount of holders the RSR token had on January 13th 2022
 
-Thank you in advance",high
+Thank you in advance",medium
 371,"ARC  UIUX upgrade governance framework
 The Aave protocol is a decentralized ecosystem of smartcontracts running on several EVM networks This ecosystem is permisionless and anyone with the required tech knowledge can freely use 100 of the Aave protocol features
 
@@ -8428,7 +8428,7 @@ ABSTAIN Aave V2 Arc Electing not to vote
 
  Copyright
 
-Copyright and related rights waived via CC0",high
+Copyright and related rights waived via CC0",medium
 375,"
 
 title ARC Extend the Safety Module Protection to Aave V2 Avalanche
@@ -9164,7 +9164,7 @@ The Aavechan Initiative and Gauntlet are not presenting this ARFC on behalf of a
 
 The Aavechan Initiative and Gauntlet reserve the right to not move forward with any parameter changes recommended in Snapshot polls if market conditions change meaningfully
 
-By approving this proposal you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntletnetworktos",high
+By approving this proposal you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntletnetworktos",medium
 390,"
 title ARFC sDAI Onboarding on Aave V3 Gnosis Pool
 author marczeller  Aavechan Initiative
@@ -9225,7 +9225,7 @@ The Aavechan Initiative is not presenting this ARFC on behalf of any third party
  Copyright
 
 Copyright and related rights waived via CC0
-",high
+",medium
 391,"
 
 title ARFC Treasury Management  Add to rETH Holding
@@ -9292,7 +9292,7 @@ TokenLogic receives no compensation beyond Aave protocol for the creation of thi
 
  Copyright
 
-Copyright and related rights waived via CC0httpscreativecommonsorgpublicdomainzero10",high
+Copyright and related rights waived via CC0httpscreativecommonsorgpublicdomainzero10",medium
 392,"
 
 Title ARFC BGD Security budget request  December 2023
@@ -9875,7 +9875,7 @@ This proposal is made independently by the ACI
 
  Copyright
 
-Copyright and related rights waived via CC0httpscreativecommonsorgpublicdomainzero10",high
+Copyright and related rights waived via CC0httpscreativecommonsorgpublicdomainzero10",medium
 400,"
 
 Title ARFC Polygon v2 Borrow Rate Adjustments
@@ -9946,7 +9946,7 @@ TokenLogic and karpatkey receive no payment for this proposal TokenLogic and kar
 
  Copyright
 
-Copyright and related rights waived via CC0httpscreativecommonsorgpublicdomainzero10",high
+Copyright and related rights waived via CC0httpscreativecommonsorgpublicdomainzero10",medium
 401,"
 Title ARFC Orbit Program Renewal May 2024 
 Date 20240513

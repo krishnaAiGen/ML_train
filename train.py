@@ -37,7 +37,9 @@ train_texts = train_texts.dropna().astype(str).tolist()
 val_texts = val_texts.dropna().astype(str).tolist()
 
 # Initialize the RoBERTa tokenizer
-tokenizer = RobertaTokenizer.from_pretrained('roberta-large')
+# Commenting roberta-large and using roberta-base
+# tokenizer = RobertaTokenizer.from_pretrained('roberta-large')
+tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
 
 # Tokenize the dataset
 train_encodings = tokenizer(train_texts, truncation=True, padding=True, max_length=128)
@@ -89,12 +91,14 @@ best_weight_decay = 0.00020105322157003673
 low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.g., 0.01)
 
 # Load the RoBERTa model for sequence classification
-model = RobertaForSequenceClassification.from_pretrained('roberta-large', num_labels=3).to(device)
+# Commenting roberta-large and using roberta-base
+# model = RobertaForSequenceClassification.from_pretrained('roberta-large', num_labels=3).to(device)
+model = RobertaForSequenceClassification.from_pretrained('roberta-base', num_labels=3).to(device)
 
 # Set training arguments with no checkpoint saving and the lower learning rate
 training_args = TrainingArguments(
     output_dir='./results',          # Output directory
-    num_train_epochs=50,              # Number of training epochs
+    num_train_epochs=50,             # Number of training epochs
     per_device_train_batch_size=best_batch_size,   # Best batch size for training
     per_device_eval_batch_size=best_batch_size,    # Best batch size for evaluation
     warmup_steps=500,                # Number of warmup steps for learning rate scheduler

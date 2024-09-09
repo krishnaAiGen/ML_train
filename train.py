@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('bbn_5_0.1.csv')  # Replace with your dataset path
+df = pd.read_csv('10_01_300.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 df = df.dropna(subset=['text', 'label'])  # Drop rows with missing texts or labels
@@ -91,10 +91,10 @@ low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.
 # Load the RoBERTa model for sequence classification
 model = RobertaForSequenceClassification.from_pretrained('roberta-large', num_labels=3).to(device)
 
-# Set training arguments with the lower learning rate
+# Set training arguments with no checkpoint saving and the lower learning rate
 training_args = TrainingArguments(
     output_dir='./results',          # Output directory
-    num_train_epochs=15,              # Number of training epochs
+    num_train_epochs=50,              # Number of training epochs
     per_device_train_batch_size=best_batch_size,   # Best batch size for training
     per_device_eval_batch_size=best_batch_size,    # Best batch size for evaluation
     warmup_steps=500,                # Number of warmup steps for learning rate scheduler
@@ -105,7 +105,8 @@ training_args = TrainingArguments(
     fp16=True,                       # Enable FP16 mixed precision for faster training on compatible hardware
     learning_rate=low_learning_rate, # Lower learning rate
     max_grad_norm=0.5,               # Apply gradient clipping to stabilize training
-    lr_scheduler_type="cosine_with_restarts" # Use a learning rate scheduler to dynamically adjust the learning rate
+    lr_scheduler_type="cosine_with_restarts", # Use a learning rate scheduler to dynamically adjust the learning rate
+    save_strategy="no"               # Disable checkpoint saving
 )
 
 # Initialize the Trainer with adjusted training arguments
@@ -119,6 +120,8 @@ trainer = Trainer(
 
 # Train the model using the lower learning rate
 trainer.train()
+
+# Save the final model at the end
 trainer.save_model('./trained_model')
 
 # Evaluate the model

@@ -1,8 +1,8 @@
 import torch
 from torch.utils.data import Dataset
-from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments
+from transformers import RobertaTokenizer, RobertaForSequenceClassification, Trainer, TrainingArguments
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
@@ -20,7 +20,7 @@ df['label'] = df['label'].astype(str)     # Ensure labels are strings
 label_encoder = LabelEncoder()
 df['label'] = label_encoder.fit_transform(df['label'])
 label_mapping = {index: label for index, label in enumerate(label_encoder.classes_)}
-print(label_mapping)
+print("Label Mapping:", label_mapping)
 
 # Split the dataset into training and validation sets
 train_texts, val_texts, train_labels, val_labels = train_test_split(
@@ -36,8 +36,8 @@ val_labels = val_labels.reset_index(drop=True)
 train_texts = train_texts.dropna().astype(str).tolist()
 val_texts = val_texts.dropna().astype(str).tolist()
 
-# Initialize the BERT tokenizer
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+# Initialize the RoBERTa tokenizer
+tokenizer = RobertaTokenizer.from_pretrained('roberta-large')
 
 # Tokenize the dataset
 train_encodings = tokenizer(train_texts, truncation=True, padding=True, max_length=128)
@@ -61,12 +61,18 @@ class CustomDataset(Dataset):
 train_dataset = CustomDataset(train_encodings, train_labels)
 val_dataset = CustomDataset(val_encodings, val_labels)
 
-# Define the compute_metrics function for evaluation
+# Define the compute_metrics function for evaluation, including confusion matrix
 def compute_metrics(pred):
     labels = pred.label_ids
     preds = pred.predictions.argmax(-1)
     precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average='weighted')
     acc = accuracy_score(labels, preds)
+    
+    # Calculate confusion matrix
+    cm = confusion_matrix(labels, preds)
+    print("Confusion Matrix:")
+    print(cm)
+    
     return {
         'accuracy': acc,
         'f1': f1,
@@ -82,8 +88,8 @@ best_weight_decay = 0.00020105322157003673
 # Set a lower learning rate
 low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.g., 0.01)
 
-# Load the BERT model for sequence classification
-model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=3).to(device)
+# Load the RoBERTa model for sequence classification
+model = RobertaForSequenceClassification.from_pretrained('roberta-large', num_labels=3).to(device)
 
 # Set training arguments with the lower learning rate
 training_args = TrainingArguments(
@@ -114,7 +120,6 @@ trainer = Trainer(
 # Train the model using the lower learning rate
 trainer.train()
 trainer.save_model('./trained_model')
-
 
 # Evaluate the model
 eval_results = trainer.evaluate()

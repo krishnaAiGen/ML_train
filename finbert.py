@@ -91,7 +91,7 @@ low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.
 # Load the FinBERT model for sequence classification
 model = AutoModelForSequenceClassification.from_pretrained("ProsusAI/finbert", num_labels=3).to(device)
 
-# Set training arguments with early stopping
+# Set training arguments to save only the best model
 training_args = TrainingArguments(
     output_dir='./results',          # Output directory
     num_train_epochs=50,             # Number of training epochs
@@ -102,11 +102,12 @@ training_args = TrainingArguments(
     logging_dir='./logs',            # Directory to store logs during training
     logging_steps=10,                # How often to log training progress (every 10 steps)
     eval_strategy="epoch",           # Evaluation strategy, set to evaluate at the end of each epoch
+    save_strategy="epoch",           # Save strategy to match eval strategy
+    save_total_limit=1,              # Keep only the best checkpoint
     fp16=True,                       # Enable FP16 mixed precision for faster training on compatible hardware
     learning_rate=low_learning_rate, # Lower learning rate
     max_grad_norm=0.5,               # Apply gradient clipping to stabilize training
     lr_scheduler_type="cosine_with_restarts", # Use a learning rate scheduler to dynamically adjust the learning rate
-    save_strategy="no",              # Disable checkpoint saving
     load_best_model_at_end=True,     # Load the best model when stopping early
     metric_for_best_model="eval_loss", # Metric to monitor for early stopping
     greater_is_better=False          # Lower loss is better

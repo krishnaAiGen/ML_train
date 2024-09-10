@@ -1,16 +1,17 @@
 import torch
 from torch.utils.data import Dataset
-from transformers import RobertaTokenizer, RobertaForSequenceClassification, Trainer, TrainingArguments
+from transformers import RobertaTokenizer, RobertaForSequenceClassification, Trainer, TrainingArguments, EarlyStoppingCallback
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
+import nlpaug.augmenter.word as naw
 
 # Check if a compatible GPU is available and set device
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('10_01_300.csv')  # Replace with your dataset path
+df = pd.read_csv('20_05_300.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 df = df.dropna(subset=['text', 'label'])  # Drop rows with missing texts or labels
@@ -22,23 +23,29 @@ df['label'] = label_encoder.fit_transform(df['label'])
 label_mapping = {index: label for index, label in enumerate(label_encoder.classes_)}
 print("Label Mapping:", label_mapping)
 
-# Split the dataset into training and validation sets
-train_texts, val_texts, train_labels, val_labels = train_test_split(
-    df['text'], df['label'], test_size=0.2, random_state=42)
+# Function for augmenting data
+def augment_text(texts, augmenter, num_augmentations=1):
+    augmented_texts = []
+    for text in texts:
+        for _ in range(num_augmentations):
+            augmented_texts.append(augmenter.augment(text))
+    return augmented_texts
 
-# Reset indices to avoid KeyError during indexing in Dataset class
-train_texts = train_texts.reset_index(drop=True)
-val_texts = val_texts.reset_index(drop=True)
-train_labels = train_labels.reset_index(drop=True)
-val_labels = val_labels.reset_index(drop=True)
+# Initialize augmenter
+augmenter = naw.SynonymAug(aug_src='wordnet')  # Using synonym replacement as an example
 
-# Ensure that all texts are strings
-train_texts = train_texts.dropna().astype(str).tolist()
-val_texts = val_texts.dropna().astype(str).tolist()
+# Augment training data
+augmented_train_texts = augment_text(train_texts, augmenter)
+augmented_train_labels = train_labels.tolist() * 2  # Assuming one augmentation per original text
+
+# Combine original and augmented data
+train_texts = train_texts.tolist() + augmented_train_texts
+train_labels = train_labels.tolist() + augmented_train_labels
+
+# Shuffle the training data
+train_texts, train_labels = sklearn.utils.shuffle(train_texts, train_labels, random_state=42)
 
 # Initialize the RoBERTa tokenizer
-# Commenting roberta-large and using roberta-base
-# tokenizer = RobertaTokenizer.from_pretrained('roberta-large')
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
 
 # Tokenize the dataset
@@ -91,11 +98,9 @@ best_weight_decay = 0.00020105322157003673
 low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.g., 0.01)
 
 # Load the RoBERTa model for sequence classification
-# Commenting roberta-large and using roberta-base
-# model = RobertaForSequenceClassification.from_pretrained('roberta-large', num_labels=3).to(device)
 model = RobertaForSequenceClassification.from_pretrained('roberta-base', num_labels=3).to(device)
 
-# Set training arguments with no checkpoint saving and the lower learning rate
+# Set training arguments with early stopping and data augmentation
 training_args = TrainingArguments(
     output_dir='./results',          # Output directory
     num_train_epochs=50,             # Number of training epochs
@@ -110,16 +115,20 @@ training_args = TrainingArguments(
     learning_rate=low_learning_rate, # Lower learning rate
     max_grad_norm=0.5,               # Apply gradient clipping to stabilize training
     lr_scheduler_type="cosine_with_restarts", # Use a learning rate scheduler to dynamically adjust the learning rate
-    save_strategy="no"               # Disable checkpoint saving
+    save_strategy="no",              # Disable checkpoint saving
+    load_best_model_at_end=True,     # Load the best model when stopping early
+    metric_for_best_model="eval_loss", # Metric to monitor for early stopping
+    greater_is_better=False          # Lower loss is better
 )
 
-# Initialize the Trainer with adjusted training arguments
+# Initialize the Trainer with adjusted training arguments and early stopping
 trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
     eval_dataset=val_dataset,
-    compute_metrics=compute_metrics
+    compute_metrics=compute_metrics,
+    callbacks=[EarlyStoppingCallback(early_stopping_patience=3)]  # Stop if no improvement in 3 evals
 )
 
 # Train the model using the lower learning rate

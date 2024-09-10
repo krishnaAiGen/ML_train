@@ -5,7 +5,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
-import nlpaug.augmenter.word as naw
 
 # Check if a compatible GPU is available and set device
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -23,27 +22,19 @@ df['label'] = label_encoder.fit_transform(df['label'])
 label_mapping = {index: label for index, label in enumerate(label_encoder.classes_)}
 print("Label Mapping:", label_mapping)
 
-# Function for augmenting data
-def augment_text(texts, augmenter, num_augmentations=1):
-    augmented_texts = []
-    for text in texts:
-        for _ in range(num_augmentations):
-            augmented_texts.append(augmenter.augment(text))
-    return augmented_texts
+# Split the dataset into training and validation sets
+train_texts, val_texts, train_labels, val_labels = train_test_split(
+    df['text'], df['label'], test_size=0.2, random_state=42)
 
-# Initialize augmenter
-augmenter = naw.SynonymAug(aug_src='wordnet')  # Using synonym replacement as an example
+# Reset indices to avoid KeyError during indexing in Dataset class
+train_texts = train_texts.reset_index(drop=True)
+val_texts = val_texts.reset_index(drop=True)
+train_labels = train_labels.reset_index(drop=True)
+val_labels = val_labels.reset_index(drop=True)
 
-# Augment training data
-augmented_train_texts = augment_text(train_texts, augmenter)
-augmented_train_labels = train_labels.tolist() * 2  # Assuming one augmentation per original text
-
-# Combine original and augmented data
-train_texts = train_texts.tolist() + augmented_train_texts
-train_labels = train_labels.tolist() + augmented_train_labels
-
-# Shuffle the training data
-train_texts, train_labels = sklearn.utils.shuffle(train_texts, train_labels, random_state=42)
+# Ensure that all texts are strings
+train_texts = train_texts.dropna().astype(str).tolist()
+val_texts = val_texts.dropna().astype(str).tolist()
 
 # Initialize the RoBERTa tokenizer
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
@@ -100,7 +91,7 @@ low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.
 # Load the RoBERTa model for sequence classification
 model = RobertaForSequenceClassification.from_pretrained('roberta-base', num_labels=3).to(device)
 
-# Set training arguments with early stopping and data augmentation
+# Set training arguments with early stopping
 training_args = TrainingArguments(
     output_dir='./results',          # Output directory
     num_train_epochs=50,             # Number of training epochs

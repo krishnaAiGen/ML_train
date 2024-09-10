@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import Dataset
-from transformers import RobertaTokenizer, RobertaForSequenceClassification, Trainer, TrainingArguments, EarlyStoppingCallback
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments, EarlyStoppingCallback
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
 import pandas as pd
@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('20_05_btc_desc.csv')  # Replace with your dataset path
+df = pd.read_csv('10_01_300.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 df = df.dropna(subset=['text', 'label'])  # Drop rows with missing texts or labels
@@ -36,8 +36,8 @@ val_labels = val_labels.reset_index(drop=True)
 train_texts = train_texts.dropna().astype(str).tolist()
 val_texts = val_texts.dropna().astype(str).tolist()
 
-# Initialize the RoBERTa tokenizer
-tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
+# Initialize the FinBERT tokenizer
+tokenizer = AutoTokenizer.from_pretrained("ProsusAI/finbert")
 
 # Tokenize the dataset
 train_encodings = tokenizer(train_texts, truncation=True, padding=True, max_length=128)
@@ -88,10 +88,10 @@ best_weight_decay = 0.00020105322157003673
 # Set a lower learning rate
 low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.g., 0.01)
 
-# Load the RoBERTa model for sequence classification
-model = RobertaForSequenceClassification.from_pretrained('roberta-base', num_labels=3).to(device)
+# Load the FinBERT model for sequence classification
+model = AutoModelForSequenceClassification.from_pretrained("ProsusAI/finbert", num_labels=3).to(device)
 
-# Set training arguments with early stopping
+# Set training arguments to save only the best model
 training_args = TrainingArguments(
     output_dir='./results',          # Output directory
     num_train_epochs=50,             # Number of training epochs
@@ -102,11 +102,12 @@ training_args = TrainingArguments(
     logging_dir='./logs',            # Directory to store logs during training
     logging_steps=10,                # How often to log training progress (every 10 steps)
     eval_strategy="epoch",           # Evaluation strategy, set to evaluate at the end of each epoch
+    save_strategy="epoch",           # Save strategy to match eval strategy
+    save_total_limit=1,              # Keep only the best checkpoint
     fp16=True,                       # Enable FP16 mixed precision for faster training on compatible hardware
     learning_rate=low_learning_rate, # Lower learning rate
     max_grad_norm=0.5,               # Apply gradient clipping to stabilize training
     lr_scheduler_type="cosine_with_restarts", # Use a learning rate scheduler to dynamically adjust the learning rate
-    save_strategy="no",              # Disable checkpoint saving
     load_best_model_at_end=True,     # Load the best model when stopping early
     metric_for_best_model="eval_loss", # Metric to monitor for early stopping
     greater_is_better=False          # Lower loss is better
@@ -126,8 +127,7 @@ trainer = Trainer(
 trainer.train()
 
 # Save the final model at the end
-model.save_pretrained('./trained_model')
-tokenizer.save_pretrained('./trained_model')
+trainer.save_model('./trained_model')
 
 # Evaluate the model
 eval_results = trainer.evaluate()

@@ -83,10 +83,10 @@ def compute_metrics(pred):
 # Best hyperparameters found by Optuna
 best_learning_rate = 1.9689229956268363e-05
 best_batch_size = 8
-best_weight_decay = 0.00020105322157003673
+best_weight_decay = 0.01
 
 # Set a lower learning rate
-low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.g., 0.01)
+low_learning_rate = best_learning_rate  # Adjust this factor as needed (e.g., 0.01)
 
 # Load the FinBERT model for sequence classification
 model = AutoModelForSequenceClassification.from_pretrained("ProsusAI/finbert", num_labels=3).to(device)

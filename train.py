@@ -11,7 +11,7 @@ import nlpaug.augmenter.word as naw
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('20_05_300.csv')  # Replace with your dataset path
+df = pd.read_csv('20_05_btc_desc.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 df = df.dropna(subset=['text', 'label'])  # Drop rows with missing texts or labels
@@ -135,7 +135,8 @@ trainer = Trainer(
 trainer.train()
 
 # Save the final model at the end
-trainer.save_model('./trained_model')
+model.save_pretrained('./trained_model')
+tokenizer.save_pretrained('./trained_model')
 
 # Evaluate the model
 eval_results = trainer.evaluate()

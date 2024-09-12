@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('20_05_btc_desc.csv')  # Replace with your dataset path
+df = pd.read_csv('5_15_summarize.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 df = df.dropna(subset=['text', 'label'])  # Drop rows with missing texts or labels
@@ -119,7 +119,7 @@ trainer = Trainer(
     train_dataset=train_dataset,
     eval_dataset=val_dataset,
     compute_metrics=compute_metrics,
-    callbacks=[EarlyStoppingCallback(early_stopping_patience=3)]  # Stop if no improvement in 3 evals
+    callbacks=[EarlyStoppingCallback(early_stopping_patience=10)]  # Stop if no improvement in 3 evals
 )
 
 # Train the model using the lower learning rate

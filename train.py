@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('1_10_summarize.csv')  # Replace with your dataset path
+df = pd.read_csv('1_10_summarize_bb.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 df = df.dropna(subset=['text', 'label'])  # Drop rows with missing texts or labels

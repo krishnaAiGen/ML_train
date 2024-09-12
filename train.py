@@ -91,25 +91,25 @@ low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.
 # Load the RoBERTa model for sequence classification
 model = RobertaForSequenceClassification.from_pretrained('roberta-base', num_labels=3).to(device)
 
-# Set training arguments with early stopping
 training_args = TrainingArguments(
-    output_dir='./results',          # Output directory
-    num_train_epochs=50,             # Number of training epochs
-    per_device_train_batch_size=best_batch_size,   # Best batch size for training
-    per_device_eval_batch_size=best_batch_size,    # Best batch size for evaluation
-    warmup_steps=500,                # Number of warmup steps for learning rate scheduler
-    weight_decay=best_weight_decay,  # Best weight decay rate
-    logging_dir='./logs',            # Directory to store logs during training
-    logging_steps=10,                # How often to log training progress (every 10 steps)
-    eval_strategy="epoch",           # Evaluation strategy, set to evaluate at the end of each epoch
-    fp16=True,                       # Enable FP16 mixed precision for faster training on compatible hardware
-    learning_rate=low_learning_rate, # Lower learning rate
-    max_grad_norm=0.5,               # Apply gradient clipping to stabilize training
-    lr_scheduler_type="cosine_with_restarts", # Use a learning rate scheduler to dynamically adjust the learning rate
-    save_strategy="no",              # Disable checkpoint saving
-    load_best_model_at_end=True,     # Load the best model when stopping early
-    metric_for_best_model="eval_loss", # Metric to monitor for early stopping
-    greater_is_better=False          # Lower loss is better
+    output_dir='./results',
+    num_train_epochs=50,
+    per_device_train_batch_size=best_batch_size,
+    per_device_eval_batch_size=best_batch_size,
+    warmup_steps=500,
+    weight_decay=best_weight_decay,
+    logging_dir='./logs',
+    logging_steps=10,
+    eval_strategy="epoch",
+    save_strategy="epoch",  # Save at each epoch
+    save_total_limit=1,  # Keep only the best checkpoint
+    fp16=True,
+    learning_rate=low_learning_rate,
+    max_grad_norm=0.5,
+    lr_scheduler_type="cosine_with_restarts",
+    load_best_model_at_end=True,
+    metric_for_best_model="eval_loss",
+    greater_is_better=False
 )
 
 # Initialize the Trainer with adjusted training arguments and early stopping

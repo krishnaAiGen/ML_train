@@ -20,7 +20,7 @@ from sklearn.metrics import mean_absolute_error
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('price_rms_bullish_bearish.csv')  # Replace with your dataset path
+df = pd.read_csv('5_20_summarize_mae.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 df = df.dropna(subset=['text', 'percent_price'])  # Drop rows with missing texts or prices
@@ -41,7 +41,7 @@ train_texts = train_texts.dropna().astype(str).tolist()
 val_texts = val_texts.dropna().astype(str).tolist()
 
 # Initialize the RoBERTa tokenizer for large model
-tokenizer = RobertaTokenizer.from_pretrained('roberta-large')
+tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
 
 # Tokenize the dataset
 train_encodings = tokenizer(train_texts, truncation=True, padding=True, max_length=128)
@@ -76,7 +76,7 @@ def compute_metrics(pred):
 
 # Custom model for regression using RoBERTa large
 class RobertaForRegression(torch.nn.Module):
-    def __init__(self, model_name='roberta-large'):
+    def __init__(self, model_name='roberta-base'):
         super(RobertaForRegression, self).__init__()
         self.roberta = RobertaModel.from_pretrained(model_name)
         self.regressor = torch.nn.Linear(self.roberta.config.hidden_size, 1)  # Regression head

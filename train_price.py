@@ -8,13 +8,10 @@ Created on Mon Sep  9 02:33:44 2024
 
 import torch
 from torch.utils.data import Dataset
-from transformers import RobertaTokenizer, RobertaModel, Trainer, TrainingArguments
+from transformers import RobertaTokenizer, RobertaModel, Trainer, TrainingArguments, EarlyStoppingCallback
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
-import pandas as pd
-import numpy as np
 from sklearn.metrics import mean_absolute_error
-
+import pandas as pd
 
 # Check if a compatible GPU is available and set device
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -40,7 +37,7 @@ val_prices = val_prices.reset_index(drop=True)
 train_texts = train_texts.dropna().astype(str).tolist()
 val_texts = val_texts.dropna().astype(str).tolist()
 
-# Initialize the RoBERTa tokenizer for large model
+# Initialize the RoBERTa tokenizer for base model
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
 
 # Tokenize the dataset
@@ -74,7 +71,7 @@ def compute_metrics(pred):
         'mae': mae
     }
 
-# Custom model for regression using RoBERTa large
+# Custom model for regression using RoBERTa base
 class RobertaForRegression(torch.nn.Module):
     def __init__(self, model_name='roberta-base'):
         super(RobertaForRegression, self).__init__()
@@ -89,7 +86,7 @@ class RobertaForRegression(torch.nn.Module):
             loss = torch.nn.functional.l1_loss(logits.squeeze(), labels)  # MAE (L1) loss for regression
         return {'loss': loss, 'logits': logits} if loss is not None else {'logits': logits}
 
-# Initialize the model with roberta-large
+# Initialize the model with roberta-base
 model = RobertaForRegression().to(device)
 
 # Best hyperparameters found by Optuna or predefined
@@ -100,7 +97,7 @@ best_weight_decay = 0.00020105322157003673
 # Set a lower learning rate
 low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.g., 0.01)
 
-# Set training arguments to avoid saving intermediate checkpoints
+# Set training arguments to save only the best model and add early stopping
 training_args = TrainingArguments(
     output_dir='./results',          # Output directory
     num_train_epochs=200,             # Number of training epochs
@@ -111,20 +108,25 @@ training_args = TrainingArguments(
     logging_dir='./logs',            # Directory to store logs during training
     logging_steps=10,                # How often to log training progress (every 10 steps)
     eval_strategy="epoch",           # Evaluation strategy, set to evaluate at the end of each epoch
+    save_strategy="epoch",           # Save strategy to save at each epoch
+    save_total_limit=1,              # Keep only the best checkpoint
+    load_best_model_at_end=True,     # Load the best model at the end
+    metric_for_best_model="eval_loss", # Metric to use for early stopping
+    greater_is_better=False,         # Lower eval_loss is better
     fp16=True,                       # Enable FP16 mixed precision for faster training on compatible hardware
     learning_rate=low_learning_rate, # Lower learning rate
     max_grad_norm=0.5,               # Apply gradient clipping to stabilize training
     lr_scheduler_type="cosine_with_restarts",  # Use a learning rate scheduler to dynamically adjust the learning rate
-    save_strategy="no",              # Disable checkpoint saving
 )
 
-# Initialize the Trainer with adjusted training arguments
+# Initialize the Trainer with adjusted training arguments and early stopping
 trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
     eval_dataset=val_dataset,
-    compute_metrics=compute_metrics
+    compute_metrics=compute_metrics,
+    callbacks=[EarlyStoppingCallback(early_stopping_patience=3)]  # Stop if no improvement in 3 evals
 )
 
 # Train the model

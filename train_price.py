@@ -10,15 +10,17 @@ import torch
 from torch.utils.data import Dataset
 from transformers import RobertaTokenizer, RobertaModel, Trainer, TrainingArguments
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
+from sklearn.metrics import mean_absolute_error
+
 
 # Check if a compatible GPU is available and set device
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('5_20_summarize_mae.csv')  # Replace with your dataset path
+df = pd.read_csv('5_20_summ_mae_n.csv.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 df = df.dropna(subset=['text', 'percent_price'])  # Drop rows with missing texts or prices
@@ -38,7 +40,7 @@ val_prices = val_prices.reset_index(drop=True)
 train_texts = train_texts.dropna().astype(str).tolist()
 val_texts = val_texts.dropna().astype(str).tolist()
 
-# Initialize the RoBERTa tokenizer for the base model
+# Initialize the RoBERTa tokenizer for large model
 tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
 
 # Tokenize the dataset
@@ -72,24 +74,22 @@ def compute_metrics(pred):
         'mae': mae
     }
 
-# Custom model for regression using RoBERTa base with added dropout
+# Custom model for regression using RoBERTa large
 class RobertaForRegression(torch.nn.Module):
     def __init__(self, model_name='roberta-base'):
         super(RobertaForRegression, self).__init__()
         self.roberta = RobertaModel.from_pretrained(model_name)
-        self.dropout = torch.nn.Dropout(0.3)  # Add dropout for regularization
         self.regressor = torch.nn.Linear(self.roberta.config.hidden_size, 1)  # Regression head
 
     def forward(self, input_ids, attention_mask=None, labels=None):
         outputs = self.roberta(input_ids, attention_mask=attention_mask)
-        pooled_output = self.dropout(outputs.pooler_output)  # Apply dropout
-        logits = self.regressor(pooled_output)  # Use the pooled output for regression
+        logits = self.regressor(outputs.pooler_output)  # Use the pooled output for regression
         loss = None
         if labels is not None:
             loss = torch.nn.functional.l1_loss(logits.squeeze(), labels)  # MAE (L1) loss for regression
         return {'loss': loss, 'logits': logits} if loss is not None else {'logits': logits}
 
-# Initialize the model with roberta-base
+# Initialize the model with roberta-large
 model = RobertaForRegression().to(device)
 
 # Best hyperparameters found by Optuna or predefined
@@ -98,24 +98,12 @@ best_batch_size = 4  # Consider reducing if you face memory issues
 best_weight_decay = 0.00020105322157003673
 
 # Set a lower learning rate
-low_learning_rate = best_learning_rate * 0.01  # Further reduce the learning rate for stability
-
-# Freeze most of the layers except the last few and the regression head
-for param in model.roberta.parameters():
-    param.requires_grad = False
-
-# Unfreeze the last 2 encoder layers
-for param in model.roberta.encoder.layer[-2:].parameters():
-    param.requires_grad = True
-
-# Always ensure the regression head is trainable
-for param in model.regressor.parameters():
-    param.requires_grad = True
+low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.g., 0.01)
 
 # Set training arguments to avoid saving intermediate checkpoints
 training_args = TrainingArguments(
     output_dir='./results',          # Output directory
-    num_train_epochs=50,             # Adjusted number of training epochs
+    num_train_epochs=200,             # Number of training epochs
     per_device_train_batch_size=best_batch_size,   # Best batch size for training, reduce if OOM
     per_device_eval_batch_size=best_batch_size,    # Best batch size for evaluation
     warmup_steps=500,                # Number of warmup steps for learning rate scheduler
@@ -125,7 +113,7 @@ training_args = TrainingArguments(
     eval_strategy="epoch",           # Evaluation strategy, set to evaluate at the end of each epoch
     fp16=True,                       # Enable FP16 mixed precision for faster training on compatible hardware
     learning_rate=low_learning_rate, # Lower learning rate
-    max_grad_norm=0.1,               # Apply stricter gradient clipping
+    max_grad_norm=0.5,               # Apply gradient clipping to stabilize training
     lr_scheduler_type="cosine_with_restarts",  # Use a learning rate scheduler to dynamically adjust the learning rate
     save_strategy="no",              # Disable checkpoint saving
 )

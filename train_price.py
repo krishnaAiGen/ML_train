@@ -17,15 +17,15 @@ import pandas as pd
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('5_20_summ_mae_n.csv.csv')  # Replace with your dataset path
+df = pd.read_csv('proposal_df_summ.csv')  # Replace with your dataset path
 
 # Check and clean the label column
-df = df.dropna(subset=['text', 'percent_price'])  # Drop rows with missing texts or prices
-df['percent_price'] = df['percent_price'].astype(float)   # Ensure prices are floats
+# df = df.dropna(subset=['proposal', 'percent_high'])  # Drop rows with missing texts or prices
+# df['percent_price'] = df['percent_price'].astype(float)   # Ensure prices are floats
 
 # Split the dataset into training and validation sets
 train_texts, val_texts, train_prices, val_prices = train_test_split(
-    df['text'], df['percent_price'], test_size=0.2, random_state=42)
+    df['proposal'], df['percent_high'], test_size=0.2, random_state=42)
 
 # Reset indices to avoid KeyError during indexing in Dataset class
 train_texts = train_texts.reset_index(drop=True)

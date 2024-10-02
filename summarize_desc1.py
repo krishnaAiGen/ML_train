@@ -51,19 +51,23 @@ class Summarization:
 
 def read_files(post_directory):
     
-    post_df_dict = {}
-    for post in os.listdir(post_directory):
-        if post == '.DS_Store':
-            continue
+    # post_df_dict = {}
+    # for post in os.listdir(post_directory):
+    #     if post == '.DS_Store':
+    #         continue
         
-        post_df = pd.read_csv(post_directory + '/' + post)
-        post_df_dict[post.split('.')[0].split('_')[0]] = post_df
+    #     post_df = pd.read_csv(post_directory + '/' + post)
+    #     post_df_dict[post.split('.')[0].split('_')[0]] = post_df
+    
+    df = pd.read_csv(post_directory)
+    
+    post_df_dict['proposal_df_summ'] = df
         
     return post_df_dict
     
 if __name__ == "__main__":
     summarize = Summarization("mistral")
-    post_directory = '/Users/krishnayadav/Downloads/coin_data/train_data'
+    post_directory = '/Users/krishnayadav/Downloads/ML_train/train_3_15.csv'
     post_df_dict = read_files(post_directory)
     summarize.get_summary(post_df_dict)
     

@@ -127,16 +127,20 @@ def compute_metrics(pred):
     # Category (secondary sentiment) metrics
     category_precision, category_recall, category_f1, _ = precision_recall_fscore_support(category_labels, category_preds, average='weighted')
     category_acc = accuracy_score(category_labels, category_preds)
+
+    # Average of both accuracies
+    average_accuracy = (proposal_acc + category_acc) / 2
     
     return {
-        'proposal_accuracy': proposal_acc,
+        'eval_proposal_accuracy': proposal_acc,
         'proposal_f1': proposal_f1,
         'proposal_precision': proposal_precision,
         'proposal_recall': proposal_recall,
-        'category_accuracy': category_acc,
+        'eval_category_accuracy': category_acc,
         'category_f1': category_f1,
         'category_precision': category_precision,
-        'category_recall': category_recall
+        'category_recall': category_recall,
+        'eval_average_accuracy': average_accuracy  # Custom metric for best model selection
     }
 
 # Define a data collator for multitask learning
@@ -161,6 +165,7 @@ best_weight_decay = 0.00020105322157003673
 # Set a lower learning rate for fine-tuning
 low_learning_rate = best_learning_rate * 0.1
 
+# Training arguments for multitask learning
 training_args = TrainingArguments(
     output_dir='./results',
     num_train_epochs=50,
@@ -178,8 +183,8 @@ training_args = TrainingArguments(
     max_grad_norm=0.5,
     lr_scheduler_type="cosine_with_restarts",
     load_best_model_at_end=True,
-    metric_for_best_model="proposal_accuracy",  # Use accuracy for best model selection
-    greater_is_better=True  # We want higher accuracy
+    metric_for_best_model="eval_average_accuracy",  # Use the average of proposal and category accuracy
+    greater_is_better=True  # We want higher average accuracy
 )
 
 # Initialize the Trainer with multitask support

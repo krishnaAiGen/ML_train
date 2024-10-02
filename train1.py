@@ -161,7 +161,6 @@ best_weight_decay = 0.00020105322157003673
 # Set a lower learning rate for fine-tuning
 low_learning_rate = best_learning_rate * 0.1
 
-# Training arguments for multitask learning
 training_args = TrainingArguments(
     output_dir='./results',
     num_train_epochs=50,
@@ -179,8 +178,8 @@ training_args = TrainingArguments(
     max_grad_norm=0.5,
     lr_scheduler_type="cosine_with_restarts",
     load_best_model_at_end=True,
-    # Removed metric_for_best_model, as eval_loss is tracked by default
-    greater_is_better=False  # We want lower eval_loss
+    metric_for_best_model="proposal_accuracy",  # Use accuracy for best model selection
+    greater_is_better=True  # We want higher accuracy
 )
 
 # Initialize the Trainer with multitask support

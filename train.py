@@ -10,21 +10,21 @@ from sklearn.preprocessing import LabelEncoder
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('1_10_summarize_bb.csv')  # Replace with your dataset path
+df = pd.read_csv('proposal_df_summ.csv')  # Replace with your dataset path
 
 # Check and clean the label column
-df = df.dropna(subset=['text', 'label'])  # Drop rows with missing texts or labels
-df['label'] = df['label'].astype(str)     # Ensure labels are strings
+# df = df.dropna(subset=['text', 'label'])  # Drop rows with missing texts or labels
+# df['label'] = df['label'].astype(str)     # Ensure labels are strings
 
 # Encode labels
 label_encoder = LabelEncoder()
-df['label'] = label_encoder.fit_transform(df['label'])
+df['proposal_type'] = label_encoder.fit_transform(df['proposal_type'])
 label_mapping = {index: label for index, label in enumerate(label_encoder.classes_)}
 print("Label Mapping:", label_mapping)
 
 # Split the dataset into training and validation sets
 train_texts, val_texts, train_labels, val_labels = train_test_split(
-    df['text'], df['label'], test_size=0.2, random_state=42)
+    df['proposal'], df['proposal_type'], test_size=0.2, random_state=42)
 
 # Reset indices to avoid KeyError during indexing in Dataset class
 train_texts = train_texts.reset_index(drop=True)

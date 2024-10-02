@@ -14,7 +14,7 @@ device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cp
 df = pd.read_csv('/Users/krishnayadav/Downloads/ML_train/train_3_15.csv')  # Replace with your dataset path
 
 # Check and clean the 'proposal_type' and 'category' columns
-# df = df.dropna(subset=['proposal'])  # Drop rows with missing values
+df = df.dropna(subset=['text', 'proposal_type', 'category'])  # Drop rows with missing values
 df['proposal_type'] = df['proposal_type'].astype(str)
 df['category'] = df['category'].astype(str)
 
@@ -33,7 +33,7 @@ print("Category Mapping:", category_mapping)
 
 # Split the dataset into training and validation sets
 train_texts, val_texts, train_proposal_labels, val_proposal_labels, train_category_labels, val_category_labels = train_test_split(
-    df['proposal'], df['proposal_type_label'], df['category_label'], test_size=0.2, random_state=42
+    df['text'], df['proposal_type_label'], df['category_label'], test_size=0.2, random_state=42
 )
 
 # Reset indices to avoid KeyError during indexing in Dataset class
@@ -179,9 +179,10 @@ training_args = TrainingArguments(
     learning_rate=low_learning_rate,
     max_grad_norm=0.5,
     lr_scheduler_type="cosine_with_restarts",
-    load_best_model_at_end=True,
-    metric_for_best_model="eval_loss",
-    greater_is_better=False
+    load_best_model_at_end=True,  # Ensure the best model is loaded at the end
+    metric_for_best_model="eval_loss",  # This tracks the loss for choosing the best model
+    greater_is_better=False,  # We want lower loss
+    save_total_limit=1,  # Keep only the best model checkpoint to save space
 )
 
 # Initialize the Trainer with multitask support

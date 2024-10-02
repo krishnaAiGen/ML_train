@@ -114,24 +114,26 @@ model = MultiTaskRobertaModel(
 
 # Define the compute_metrics function for multitask learning
 def compute_metrics(pred):
-    proposal_labels = pred.label_ids[0]
-    category_labels = pred.label_ids[1]
+    print("Debug: Entering compute_metrics")
     
-    proposal_preds = pred.predictions[0].argmax(-1)
-    category_preds = pred.predictions[1].argmax(-1)
+    labels = pred.label_ids
+    predictions = pred.predictions
     
-    # Proposal (main sentiment) metrics
+    proposal_labels = labels[:, 0]
+    category_labels = labels[:, 1]
+    
+    proposal_preds = predictions[0].argmax(-1)
+    category_preds = predictions[1].argmax(-1)
+    
     proposal_precision, proposal_recall, proposal_f1, _ = precision_recall_fscore_support(proposal_labels, proposal_preds, average='weighted')
     proposal_acc = accuracy_score(proposal_labels, proposal_preds)
     
-    # Category (secondary sentiment) metrics
     category_precision, category_recall, category_f1, _ = precision_recall_fscore_support(category_labels, category_preds, average='weighted')
     category_acc = accuracy_score(category_labels, category_preds)
 
-    # Average of both accuracies
     average_accuracy = (proposal_acc + category_acc) / 2
     
-    return {
+    metrics = {
         'eval_proposal_accuracy': proposal_acc,
         'proposal_f1': proposal_f1,
         'proposal_precision': proposal_precision,
@@ -140,8 +142,12 @@ def compute_metrics(pred):
         'category_f1': category_f1,
         'category_precision': category_precision,
         'category_recall': category_recall,
-        'eval_average_accuracy': average_accuracy  # Custom metric for best model selection
+        'eval_average_accuracy': average_accuracy
     }
+    
+    print("Metrics computed:", metrics)
+    return metrics
+
 
 # Define a data collator for multitask learning
 def data_collator(features):

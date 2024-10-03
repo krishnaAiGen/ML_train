@@ -12,32 +12,36 @@ class Summarization:
         columns = ['protocol', 'post_id', 'timestamp', 'title', 'description']
         filtered_descriptions = pd.DataFrame(columns= columns)
         for index, row in post_df.iterrows():
-            description = row['proposal']
+            try:
+                description = row['proposal']
 
-        
-            llm = Ollama(model=self.model, temperature=0.3)
-            if len(description.split(' ')) >= 100:
-                prompt = f"summarize the sentiment of following text. remove any integer value or web page link and any other noise and limit the output in between 50-100 words: {description}"
             
-            if len(description.split(' ')) < 100:
-                prompt = f"summarize the sentiment of following text. remove any integer value or web page link and any other noise and limit the output in between 10-30 words: {description}"
-            
-            # prompt = f"give me the positive or negative sentiment of the following text: {description}"
-            
-            output = llm.invoke(prompt)
-            print("\n\n", coin)
-            # print("\n PROMPT: ", prompt)
-            # print("\n OUTPUT: ", output)
-            RED = '\033[91m'
-            GREEN = '\033[92m'
-            RESET = '\033[0m'
-            
-            # Printing prompt in red and output in green on separate lines
-            print(f"\n{RED}PROMPT:{RESET} {RED}{prompt}{RESET}")
-            print(f"\n{GREEN}OUTPUT:{RESET} train_3_15{GREEN}{output}{RESET}")
-            
-            post_df.at[index, 'proposal'] = output  # Update the description column with the LLM output
+                llm = Ollama(model=self.model, temperature=0.3)
+                if len(description.split(' ')) >= 100:
+                    prompt = f"summarize the sentiment of following text. remove any integer value or web page link and any other noise and limit the output in between 50-100 words: {description}"
+                
+                if len(description.split(' ')) < 100:
+                    prompt = f"summarize the sentiment of following text. remove any integer value or web page link and any other noise and limit the output in between 10-30 words: {description}"
+                
+                # prompt = f"give me the positive or negative sentiment of the following text: {description}"
+                
+                output = llm.invoke(prompt)
+                print("\n\n", coin)
+                # print("\n PROMPT: ", prompt)
+                # print("\n OUTPUT: ", output)
+                RED = '\033[91m'
+                GREEN = '\033[92m'
+                RESET = '\033[0m'
+                
+                # Printing prompt in red and output in green on separate lines
+                print(f"\n{RED}PROMPT:{RESET} {RED}{prompt}{RESET}")
+                print(f"\n{GREEN}OUTPUT:{RESET} train_3_15{GREEN}{output}{RESET}")
+                
+                post_df.at[index, 'proposal'] = output  # Update the description column with the LLM output
 
+            except Exception as e:
+                print(e)
+                continue
 
         
         return post_df

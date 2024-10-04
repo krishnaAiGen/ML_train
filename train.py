@@ -18,13 +18,13 @@ df = pd.read_csv('df_bullish.csv')  # Replace with your dataset path
 
 # Encode labels
 label_encoder = LabelEncoder()
-df['proposal_type'] = label_encoder.fit_transform(df['proposal_type'])
+df['category'] = label_encoder.fit_transform(df['category'])
 label_mapping = {index: label for index, label in enumerate(label_encoder.classes_)}
 print("Label Mapping:", label_mapping)
 
 # Split the dataset into training and validation sets
 train_texts, val_texts, train_labels, val_labels = train_test_split(
-    df['proposal'], df['proposal_type'], test_size=0.2, random_state=42)
+    df['category'], df['category'], test_size=0.2, random_state=42)
 
 # Reset indices to avoid KeyError during indexing in Dataset class
 train_texts = train_texts.reset_index(drop=True)

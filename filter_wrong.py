@@ -105,46 +105,66 @@ def predict_sentiment_both():
     sentiment_score_list = []
     sentiment_boolean_list = []
     
-    cleaned_data = pd.read_csv("cleaned_proposal26oct.csv")
-    cleaned_data = cleaned_data[:10]
-    for index, row in cleaned_data.iterrows():
-        print(index)
-        try:
-            text = row['proposal']
-            sentiment_type = row['proposal_type']
-            text = summarize_obj.summarize_text(text)
+    try:
+        cleaned_data = pd.read_csv("/Users/krishnayadav/Documents/aiTradingBot/src/data/cleaned_proposal26oct.csv")
+        cleaned_data['sentiment_score'] = np.nan
+        cleaned_data['sentiment_boolean'] = np.nan
+        cleaned_data['summary'] = np.nan
+        cleaned_data['sentiment_new'] = np.nan
     
-            sentiment1, sentimnet_score1 = finbert.predict(text)
-            sentiment2 , sentimnet_score2 = crypto.analyze_sentiment(text)
-            sentiment, sentimnet_score = predict_final_sentiment(sentiment1, sentimnet_score1, sentiment2 , sentimnet_score2)
-            
-            #positive condition
-            if sentiment == 'positive' and sentiment_type == 'bullish' and sentimnet_score > 0.8:
-                sentiment_score_list.append(sentimnet_score)
-                sentiment_boolean_list.append(True)
-            
-            #negative condition
-            elif sentiment == 'negative' and sentiment_type == 'bearish' and sentimnet_score > 0.8:
-                sentiment_score_list.append(sentimnet_score)
-                sentiment_boolean_list.append(True)
-            
-            #neutral condition
-            elif 0.5 < sentimnet_score < 0.7:
-                sentiment_score_list.append(sentimnet_score)
-                sentiment_boolean_list.append(True)
-            
-            #False condition
-            else:
-                sentiment_score_list.append(sentimnet_score)
-                sentiment_boolean_list.append(False)
         
-        except:
-            continue
+        for index, row in cleaned_data.iterrows():
+            print(index)
+            try:
+                text = row['proposal']
+                sentiment_type = row['proposal_type']
+                text = summarize_obj.summarize_text(text)
+        
+                sentiment1, sentimnet_score1 = finbert.predict(text)
+                sentiment2 , sentimnet_score2 = crypto.analyze_sentiment(text)
+                sentiment, sentimnet_score = predict_final_sentiment(sentiment1, sentimnet_score1, sentiment2 , sentimnet_score2)
+                
+                #positive condition
+                if sentiment == 'positive' and sentiment_type == 'bullish' and sentimnet_score > 0.8:
+                    cleaned_data.at[index, 'sentiment_score'] = sentimnet_score
+                    cleaned_data.at[index, 'sentiment_boolean'] = True
+                    cleaned_data.at[index, 'summary'] = text
+                    cleaned_data.at[index, 'sentiment_new'] = 'bullish'
     
-    cleaned_data['sentiment_score'] = sentiment_score_list
-    cleaned_data['sent_boolean'] = sentiment_boolean_list
     
-    cleaned_data.to_csv('cleaned_proposal28oct.csv')
+                #negative condition
+                elif sentiment == 'negative' and sentiment_type == 'bearish' and sentimnet_score > 0.8:
+                    cleaned_data.at[index, 'sentiment_score'] = sentimnet_score
+                    cleaned_data.at[index, 'sentiment_boolean'] = True
+                    cleaned_data.at[index, 'summary'] = text
+                    cleaned_data.at[index, 'sentiment_new'] = 'bearish'
+    
+    
+                #neutral condition
+                elif 0.5 < sentimnet_score < 0.7:
+                    cleaned_data.at[index, 'sentiment_score'] = sentimnet_score
+                    cleaned_data.at[index, 'sentiment_boolean'] = True
+                    cleaned_data.at[index, 'summary'] = text
+                    cleaned_data.at[index, 'sentiment_new'] = 'neutral'
+    
+                
+                #False condition
+                else:
+                    cleaned_data.at[index, 'sentiment_score'] = sentimnet_score
+                    cleaned_data.at[index, 'sentiment_boolean'] = False
+                    cleaned_data.at[index, 'summary'] = text
+                    cleaned_data.at[index, 'sentiment_new'] = 'wrong'
+            
+            except:
+                continue
+        
+    # cleaned_data['sentiment_score'] = sentiment_score_list
+    # cleaned_data['sent_boolean'] = sentiment_boolean_list
+    except Exception as e:
+        print(e)
+    
+    finally:
+        cleaned_data.to_csv('cleaned_proposal28oct.csv')
 
 if __name__ == "__main__":
     predict_sentiment_both()

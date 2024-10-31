@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('df_bullish.csv')  # Replace with your dataset path
+df = pd.read_csv('cleaned_proposal31oct.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 # df = df.dropna(subset=['text', 'label'])  # Drop rows with missing texts or labels
@@ -18,13 +18,13 @@ df = pd.read_csv('df_bullish.csv')  # Replace with your dataset path
 
 # Encode labels
 label_encoder = LabelEncoder()
-df['category'] = label_encoder.fit_transform(df['category'])
+df['sentiment_new'] = label_encoder.fit_transform(df['sentiment_new'])
 label_mapping = {index: label for index, label in enumerate(label_encoder.classes_)}
 print("Label Mapping:", label_mapping)
 
 # Split the dataset into training and validation sets
 train_texts, val_texts, train_labels, val_labels = train_test_split(
-    df['category'], df['category'], test_size=0.2, random_state=42)
+    df['summary'], df['sentiment_new'], test_size=0.2, random_state=42)
 
 # Reset indices to avoid KeyError during indexing in Dataset class
 train_texts = train_texts.reset_index(drop=True)
@@ -89,7 +89,7 @@ best_weight_decay = 0.00020105322157003673
 low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.g., 0.01)
 
 # Load the RoBERTa model for sequence classification
-model = RobertaForSequenceClassification.from_pretrained('roberta-base', num_labels=4).to(device)
+model = RobertaForSequenceClassification.from_pretrained('roberta-base', num_labels=3).to(device)
 
 training_args = TrainingArguments(
     output_dir='./results',

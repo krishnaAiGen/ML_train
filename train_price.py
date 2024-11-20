@@ -17,7 +17,7 @@ import pandas as pd
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 # Load your dataset
-df = pd.read_csv('proposal_df_summ.csv')  # Replace with your dataset path
+df = pd.read_csv('cleaned_bullish_proposal31oct.csv')  # Replace with your dataset path
 
 # Check and clean the label column
 # df = df.dropna(subset=['proposal', 'percent_high'])  # Drop rows with missing texts or prices
@@ -25,7 +25,7 @@ df = pd.read_csv('proposal_df_summ.csv')  # Replace with your dataset path
 
 # Split the dataset into training and validation sets
 train_texts, val_texts, train_prices, val_prices = train_test_split(
-    df['proposal'], df['percent_high'], test_size=0.2, random_state=42)
+    df['summary'], df['percent_high'], test_size=0.2, random_state=42)
 
 # Reset indices to avoid KeyError during indexing in Dataset class
 train_texts = train_texts.reset_index(drop=True)
@@ -100,7 +100,7 @@ low_learning_rate = best_learning_rate * 0.1  # Adjust this factor as needed (e.
 # Set training arguments to save only the best model and add early stopping
 training_args = TrainingArguments(
     output_dir='./results',          # Output directory
-    num_train_epochs=200,             # Number of training epochs
+    num_train_epochs=20,             # Number of training epochs
     per_device_train_batch_size=best_batch_size,   # Best batch size for training, reduce if OOM
     per_device_eval_batch_size=best_batch_size,    # Best batch size for evaluation
     warmup_steps=500,                # Number of warmup steps for learning rate scheduler
